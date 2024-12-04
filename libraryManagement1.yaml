@@ -1,0 +1,244 @@
+openapi: 3.0.0
+info:
+  title: Library Management API
+  description: API for managing a library API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /books:
+    get:
+      tags:
+        - Book
+      summary: Get book by bookName and releaseDate
+      operationId: getBook
+      parameters:
+        - name: bookName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: A book by bookName and releaseDate
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '404':
+          description: No book found for the given parameters
+          
+  /books/{bookId}:
+    delete:
+      tags:
+        - Book
+      summary: Delete a book by ID
+      operationId: deleteBook
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          description: ID of the book to delete
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: book deleted successfully, no content returned
+        '400':
+          description: bookId not found
+    put:
+      tags:
+        - Book
+      summary: Update a book by ID
+      operationId: updateBook
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          description: ID of the Book to update
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Book object that needs to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: Updated Book details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Book not found    
+  /newBook:
+    post:
+      tags:
+        - Book
+      summary: Add a new book
+      description: Add a new Book
+      operationId: createNewBook
+      requestBody:
+        description: Book object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+        required: true
+      responses:
+        '200':
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Invalid input 
+  /authors:
+     get:
+      tags:
+        - Author
+      summary: Get Author by name
+      operationId: getAuthor
+      parameters:
+        - name: authorName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A book by authorName
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+        '404':
+          description: No author found for the given parameters
+          
+  /authors/{authorId}:
+    delete:
+      tags:
+        - Author
+      summary: Delete a Author by ID
+      operationId: deleteAuthor
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          description: ID of the Author to delete
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Author deleted successfully, no content returned
+        '400':
+          description: authorId not found
+    put:
+      tags:
+        - Author
+      summary: Update a Author by ID
+      operationId: updateAuthor
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          description: ID of the Author to update
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Author object that needs to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '200':
+          description: Updated Author details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '400':
+          description: Author not found
+  /newAuthor:
+    post:
+      tags:
+        - Author
+      summary: Add a new Author
+      description: Add a new Author
+      operationId: createAuthor
+      requestBody:
+        description: Author object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+        required: true
+      responses:
+        '200':
+          description: Author created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '400':
+          description: Invalid input
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        bookName:
+          type: string
+        bookId:
+          type: integer
+        pageNumbers:
+          type: integer
+        Author: 
+          $ref: '#/components/schemas/Author'
+        topic:
+          type: string
+          enum:
+            - ROMANCE
+            - COMEDY
+            - OTHER
+        releaseDate:
+            type: string
+            format: date-time        
+    Author:
+      type: object
+      properties:
+            authorId:
+              type: integer
+            authorName:
+              type: string
+            sex:
+              type: string
+              enum: 
+                - M
+                - F

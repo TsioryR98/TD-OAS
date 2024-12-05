@@ -50,12 +50,6 @@ paths:
       summary: Delete a student by ID
       operationId: deleteStudent
       parameters:
-        - name: api_key
-          in: header
-          description: API key for authorization (optional)
-          required: false
-          schema:
-            type: string
         - name: studentId
           in: path
           required: true

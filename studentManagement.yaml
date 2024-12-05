@@ -1,0 +1,200 @@
+openapi: 3.0.0
+info:
+  title: School Management API
+  description: API for managing school
+  version: 1.0.0
+servers:
+  - url: http://school-management.com
+paths:
+  /students:
+    get:
+      tags:
+        - Student
+      summary: Get all students inside the school
+      operationId: showAllStudent
+      responses:
+        "200":
+          description: List of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Student"
+    post:
+      tags:
+        - Student
+      summary: Add a new student
+      description: Add a new Student
+      operationId: createNewStudent
+      requestBody:
+        description: Student object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Student"
+        required: true
+      responses:
+        "200":
+          description: Student created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        "400":
+          description: Invalid input
+  /student/{studentId}:
+    delete:
+      tags:
+        - Student
+      summary: Delete a student by ID
+      operationId: deleteStudent
+      parameters:
+        - name: api_key
+          in: header
+          description: API key for authorization (optional)
+          required: false
+          schema:
+            type: string
+        - name: studentId
+          in: path
+          required: true
+          description: ID of the student to delete
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Student deleted successfully, no content returned
+        "400":
+          description: StudentId not found
+    put:
+      tags:
+        - Student
+      summary: Update a student by ID
+      operationId: updateStudent
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          description: ID of the student to update
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Student object that needs to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Student"
+      responses:
+        "200":
+          description: Updated student details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        "400":
+          description: Student not found
+  /courses:
+    get:
+      tags:
+        - Courses
+      summary: Retrieve all courses
+      responses:
+        "200":
+          description: A list of courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Course"
+    post:
+      tags:
+        - Courses
+      summary: Create a new course
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Course"
+      responses:
+        "200":
+          description: Course created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Course"
+
+  /courses/{courseId}:
+    put:
+      tags:
+        - Courses
+      summary: Update a course by ID
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Course"
+      responses:
+        "200":
+          description: Course updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Course"
+    delete:
+      tags:
+        - Courses
+      summary: Delete a course by ID
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Course deleted successfully
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        studentId:
+          type: integer
+        lastName:
+          type: string
+        firstName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        studentEmail:
+          type: string
+        enrollmentDate:
+          type: string
+          format: date-time
+        group:
+          type: string
+          enum:
+            - L1
+            - L2
+            - L3
+    Course:
+      type: object
+      properties:
+        courseId:
+          type: integer
+        courseName:
+          type: string

@@ -191,6 +191,11 @@ components:
             - L1
             - L2
             - L3
+        sex:
+          type: string
+          enum:
+            - M
+            - F
     Course:
       type: object
       properties:

@@ -125,7 +125,7 @@ paths:
   /groups:
     get:
       tags:
-        - groups
+        - Groups
       summary: Get all groups inside the school
       operationId: showAllgroups
       responses:
@@ -139,7 +139,7 @@ paths:
                   $ref: "#/components/schemas/groups"
     put:
       tags:
-        - groups
+        - Groups
       summary: Create or update a groups
       description: Create a new groups or update an existing one based on the provided ID.
       operationId: createOrUpdategroups

@@ -194,7 +194,7 @@ components:
                 - F
     CrupdateBook:
       allOf:
-        - $ref: '#/components/schemas/Author'
+        - $ref: '#/components/schemas/Book'
         - type: object
           properties: 
             Author:

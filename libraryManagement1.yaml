@@ -4,7 +4,7 @@ info:
   description: API for managing a library API
   version: 1.0.0
 servers:
-  - url: http://library-management.com
+  - url: http://localhost:8080
 paths:
   /books:
     get:
@@ -65,7 +65,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Book'
+                $ref: '#/components/schemas/CrupdateBook'
         '400':
           description: Invalid input
   /books/{bookId}:
@@ -192,3 +192,11 @@ components:
               enum: 
                 - M
                 - F
+    CrupdateBook:
+      allOf:
+        - $ref: '#/components/schemas/Author'
+        - type: object
+          properties: 
+            Author:
+              type: object
+              nullable : true

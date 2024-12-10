@@ -4,7 +4,7 @@ info:
   description: API for managing a library API
   version: 1.0.0
 servers:
-  - url: http://localhost:8080
+  - url: http://library-management.com
 paths:
   /books:
     get:

@@ -87,6 +87,40 @@ paths:
           description: book deleted successfully, no content returned
         '400':
           description: bookId not found
+  /books/{bookId}/authors/{authorId}:
+    put:
+      tags:
+        - Book
+      summary : update book's author by Ids
+      operationId:  updateBookAuthor
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          description: ID of the book to delete
+          schema:
+            type: integer
+            format: int64
+        - name: authorId
+          in: path
+          required: true
+          description: ID of the book to delete
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: update book's author
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '404': 
+          description: book or author not found
+        '400':
+          description: Invalid input
   /authors:
     get:
       tags:

@@ -24,11 +24,11 @@ paths:
     post:
       tags:
         - Student
-      summary: Add a new student
-      description: Add a new Student
-      operationId: createNewStudent
+      summary: Create or update a student
+      description: Create a new student or update an existing one based on the provided ID.
+      operationId: createOrUpdateStudent
       requestBody:
-        description: Student object that needs to be created
+        description: Student object that needs to be created or updated
         content:
           application/json:
             schema:
@@ -36,6 +36,12 @@ paths:
         required: true
       responses:
         "200":
+          description: Student updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        "201":
           description: Student created successfully
           content:
             application/json:
@@ -62,35 +68,6 @@ paths:
           description: Student deleted successfully, no content returned
         "400":
           description: StudentId not found
-    put:
-      tags:
-        - Student
-      summary: Update a student by ID
-      operationId: updateStudent
-      parameters:
-        - name: studentId
-          in: path
-          required: true
-          description: ID of the student to update
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        description: Student object that needs to be updated
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Student"
-      responses:
-        "200":
-          description: Updated student details
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Student"
-        "400":
-          description: Student not found
   /courses:
     get:
       tags:

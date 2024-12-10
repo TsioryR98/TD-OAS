@@ -191,6 +191,8 @@ components:
       properties:
         studentId:
           type: integer
+        studentReference:
+          type: string
         lastName:
           type: string
         firstName:
@@ -229,11 +231,6 @@ components:
         groupName:
           type: string
         groupYear:
-          type: string
-          format: date-time
-        groupsEmail:
-          type: string
-        enrollmentDate:
           type: string
           format: date-time
         promotion:

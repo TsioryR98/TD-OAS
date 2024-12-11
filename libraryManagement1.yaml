@@ -60,12 +60,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Book'
-        '201':
-          description: Book created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CrupdateBook'
         '400':
           description: Invalid input
   /books/{bookId}:
@@ -92,7 +86,7 @@ paths:
       tags:
         - Book
       summary : update book's author by Ids
-      operationId:  updateBookAuthor
+      operationId:  updateBookAuthorById
       parameters:
         - name: bookId
           in: path
@@ -121,6 +115,33 @@ paths:
           description: book or author not found
         '400':
           description: Invalid input
+  /books/authors:
+    put:
+      tags:
+        - Book
+      summary : update book's author
+      operationId:  updateBookAuthor
+      requestBody:
+        description: update book's author
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                bookId:
+                  type: integer
+                authorId:
+                  type: integer
+      responses:
+        '200':
+          description: Updated student details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Student not found
   /authors:
     get:
       tags:
@@ -192,7 +213,7 @@ paths:
           description: authorId not found
 components:
   schemas:
-    Book:
+    CrupdateBook:
       type: object
       properties:
         bookName:
@@ -201,10 +222,6 @@ components:
           type: integer
         pageNumbers:
           type: integer
-        Author: 
-          type: object
-          items:
-            $ref: '#/components/schemas/Author'
         topic:
           type: string
           enum:
@@ -226,9 +243,9 @@ components:
               enum: 
                 - M
                 - F
-    CrupdateBook:
+    Book:
       allOf:
-        - $ref: '#/components/schemas/Book'
+        - $ref: '#/components/schemas/CrupdateBook'
         - type: object
           properties: 
             Author:

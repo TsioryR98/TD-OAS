@@ -4,7 +4,7 @@ info:
   description: API for managing a library API
   version: 1.0.0
 servers:
-  - url: http://library-management.com
+  - url: http://library-management.com 
 paths:
   /books:
     get:
@@ -30,6 +30,7 @@ paths:
           schema:
             type: string
             format: date-time
+        - $ref: '#/components/parameters/queryPagination'
       responses:
         '200':
           description: A book by bookName and releaseDate
@@ -60,12 +61,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Book'
-        '201':
-          description: Book created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
         '400':
           description: Invalid input
   /books/{bookId}:
@@ -87,6 +82,70 @@ paths:
           description: book deleted successfully, no content returned
         '400':
           description: bookId not found
+  /books/{bookId}/authors/{authorId}/page/{page}:
+    put:
+      tags:
+        - Book
+      summary : update book's author by Ids
+      operationId:  updateBookAuthorById
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          description: ID of the book to delete
+          schema:
+            type: integer
+            format: int64
+        - name: authorId
+          in: path
+          required: true
+          description: ID of the book to delete
+          schema:
+            type: integer
+            format: int64
+        - $ref: '#/components/parameters/pathPagination'
+      responses:
+        '200':
+          description: update book's author
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '404': 
+          description: book or author not found
+        '400':
+          description: Invalid input
+  /books/authors:
+    put:
+      tags:
+        - Book
+      summary : update book's author
+      operationId:  updateBookAuthor
+      requestBody:
+        description: update book's author
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                bookId:
+                  type: integer
+                  format: int64
+                authorId:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: Updated student details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Student not found
   /authors:
     get:
       tags:
@@ -99,6 +158,7 @@ paths:
           required: true
           schema:
             type: string
+        - $ref: '#/components/parameters/queryPagination'
       responses:
         '200':
           description: A book by authorName
@@ -158,19 +218,17 @@ paths:
           description: authorId not found
 components:
   schemas:
-    Book:
+    CrupdateBook:
       type: object
       properties:
         bookName:
           type: string
         bookId:
           type: integer
+          format: int64
         pageNumbers:
           type: integer
-        Author: 
-          type: object
-          items:
-            $ref: '#/components/schemas/Author'
+          format: int64
         topic:
           type: string
           enum:
@@ -192,3 +250,52 @@ components:
               enum: 
                 - M
                 - F
+    Book:
+      allOf:
+        - $ref: '#/components/schemas/CrupdateBook'
+        - type: object
+          properties: 
+            Author:
+              type: object
+              nullable : true
+  parameters:
+    queryPagination: 
+      name: page
+      in: query
+      required: false
+      description: number page
+      schema:
+        type: object
+        properties:
+          page:
+            description: min page
+            type: integer
+            format: int64
+            minimum: 1
+            default: 1
+          pageSize:
+            type: integer
+            format: int64
+            default: 10
+            maximum: 50
+            description: max pageSize
+    pathPagination: 
+      name: page
+      in: path
+      required: true
+      description: number page
+      schema:
+        type: object
+        properties:
+          page:
+            description: min page
+            type: integer
+            format: int64
+            minimum: 1
+            default: 1
+          pageSize:
+            type: integer
+            format: int64
+            default: 10
+            maximum: 50
+            description: max pageSize

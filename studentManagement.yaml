@@ -46,9 +46,89 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Student"
+                $ref: "#/components/schemas/CreateStudent"
         "400":
           description: Invalid input
+  /students/{studentId}/group:
+    put:
+      tags:
+        - Student
+      summary: update a student by ID
+      operationId: updateStudentGroup
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          description: ID of the student to delete
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/groups"
+      responses:
+        '200':
+          description: students updated successfully
+          content:
+            application/json:
+              schema:
+                type : array
+                items:
+                  $ref: '#/components/schemas/Student'
+  /students/group:
+    put:
+      tags:
+        - Student
+      summary: update a student
+      operationId: updateStudentGroups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/groups"
+      responses:
+        '200':
+          description: students updated successfully
+          content:
+            application/json:
+              schema:
+                type : array
+                items:              
+                  $ref: '#/components/schemas/Student'
+  /students/{studentId}/groups/{groupId}:
+    put:
+      tags:
+        - Student
+      summary: student Groups update
+      operationId: studentGroupUpdate
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          description: ID of the student
+          schema:
+            type: integer
+            format: int64
+        - name: groupId
+          in: path
+          required: true
+          description: ID of group
+          schema:
+            type: integer
+            format: int64 
+      responses:
+        '200':
+          description: student Groups updated successfully
+          content:
+            application/json:
+              schema:
+                type : array
+                items:              
+                  $ref: '#/components/schemas/Student'
   /students/{studentId}:
     delete:
       tags:
@@ -162,7 +242,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/groups"
+                $ref: "#/components/schemas/CreateGroup"
         "400":
           description: Invalid input
   /groups/{groupId}:
@@ -200,22 +280,15 @@ components:
         dateOfBirth:
           type: string
           format: date-time
-        studentEmail:
-          type: string
-        enrollmentDate:
-          type: string
-          format: date-time
-        group:
-          type: string
-          enum:
-            - L1
-            - L2
-            - L3
         sex:
           type: string
           enum:
             - M
             - F
+        group:
+          type: array
+          items:
+            $ref: "#/components/schemas/groups"
     Course:
       type: object
       properties:
@@ -243,6 +316,20 @@ components:
         studentNb:
           type: integer
         students:
-          type: object
+          type: array
           items:
             $ref: "#/components/schemas/Student"
+    CreateStudent:
+      allOf:
+        - $ref: '#/components/schemas/Student'
+        - type: object
+          properties:
+            ID:
+              type: string
+    CreateGroup:
+      allOf:
+        - $ref: '#/components/schemas/groups'
+        - type: object
+          properties:
+            ID:
+              type: string
